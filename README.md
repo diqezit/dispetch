@@ -45,4 +45,4 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-For questions or suggestions, contact me.
+For questions, contact https://github.com/diqezit.
