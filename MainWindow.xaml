@@ -1,0 +1,85 @@
+﻿<Window x:Class="FolderSelectorApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:FolderSelectorApp"
+        Title="Просмотр структуры папок"
+        Width="1000"
+        Height="700"
+        MinWidth="800"
+        MinHeight="500"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource {x:Static SystemColors.ControlBrushKey}}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0"
+                Padding="{StaticResource DefaultPadding}"
+                Background="White">
+            <UniformGrid Columns="3"
+                         HorizontalAlignment="Center">
+                <Button Content="Выбрать папку"
+                        Margin="0,0,10,0"
+                        Style="{StaticResource PrimaryButton}"
+                        Command="{Binding SelectFolderCommand}"
+                        IsEnabled="{Binding IsNotLoading}"/>
+                <Button Content="Сохранить в файл"
+                        Margin="10,0"
+                        Style="{StaticResource PrimaryButton}"
+                        Command="{Binding SaveToFileCommand}"
+                        IsEnabled="{Binding CanSave}"/>
+                <Button Content="Отмена"
+                        Width="150"
+                        Style="{StaticResource DangerButton}"
+                        Command="{Binding CancelCommand}"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </UniformGrid>
+        </Border>
+
+        <!-- Content -->
+        <Border Grid.Row="1"
+                Margin="10"
+                Background="White">
+            <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Auto">
+                    <TextBox Style="{StaticResource ModernTextBox}"
+                             IsReadOnly="True"
+                             Text="{Binding DirectoryContent, Mode=OneWay}"/>
+                </ScrollViewer>
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           Foreground="#666666"
+                           Text="Выберите папку для начала сканирования..."
+                           Visibility="{Binding DirectoryContent, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=true, Mode=OneWay}"/>
+            </Grid>
+        </Border>
+
+        <!-- Footer -->
+        <Border Grid.Row="2"
+                Padding="10,5"
+                Background="White">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ProgressBar Grid.Column="0"
+                             Style="{StaticResource ModernProgressBar}"
+                             Maximum="100"
+                             Value="{Binding Progress}"
+                             Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock Grid.Column="1"
+                           Margin="10,0,0,0"
+                           Style="{StaticResource StatusText}"
+                           Text="{Binding StatusMessage}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
